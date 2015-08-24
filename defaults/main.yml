@@ -34,7 +34,7 @@ tinc_connection_bridge: 'br2'
 #
 # Name of this node used in configuration files. Thruought the mesh. Don't
 # change this unless you know what you are doing.
-tinc_hostname: '{{ inventory_hostname_short }}'
+tinc_hostname: '{{ inventory_hostname | host_to_name }}'
 
 
 # .. envvar:: tinc_inventory_hosts
@@ -57,7 +57,7 @@ tinc_external_hosts: {}
 #
 # List of hosts which this ``tinc`` node should connect to; by default each
 # node connects to every other node.
-tinc_connect_to: '{{ tinc_inventory_hosts + tinc_external_hosts.keys()|d([]) }}'
+tinc_connect_to: '{{ (tinc_inventory_hosts + tinc_external_hosts.keys()|d([])) | map("host_to_name") | list }}'
 
 
 # .. envvar:: tinc_ferm_allow_any
